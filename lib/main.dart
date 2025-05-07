@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_info/pages/homepage/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,6 +11,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: const MyHomePage(title: 'Flutter Demo Home Page'));
+    return MaterialApp(home: const HomePage());
   }
 }
