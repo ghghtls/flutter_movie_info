@@ -1,32 +1,63 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import '../dto/movie_dto.dart';
+import 'package:http/http.dart' as http;
 
-class MovieApi {
+import '../dto/movie_response_dto.dart';
+import '../dto/movie_detail_dto.dart';
+import 'movie_data_source.dart';
+
+class MovieApi implements MovieDataSource {
   final String _baseUrl = 'https://api.themoviedb.org/3';
 
-  Future<List<MovieDto>> fetchNowPlayingMovies() async {
-    final token = dotenv.env['TMDB_BEARER_TOKEN'];
-    if (token == null) throw Exception('TMDB_BEARER_TOKEN가 .env에 없음');
+  Map<String, String> get _headers => {
+    'Authorization': 'Bearer ${dotenv.env['TMDB_BEARER_TOKEN']}',
+    'Content-Type': 'application/json;charset=utf-8',
+  };
 
+  @override
+  Future<MovieResponseDto> fetchNowPlaying() async {
     final url = Uri.parse('$_baseUrl/movie/now_playing?language=ko-KR&page=1');
+    return _getMovieList(url);
+  }
 
-    final response = await http.get(
-      url,
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-    );
+  @override
+  Future<MovieResponseDto> fetchPopular() async {
+    final url = Uri.parse('$_baseUrl/movie/popular?language=ko-KR&page=1');
+    return _getMovieList(url);
+  }
+
+  @override
+  Future<MovieResponseDto> fetchTopRated() async {
+    final url = Uri.parse('$_baseUrl/movie/top_rated?language=ko-KR&page=1');
+    return _getMovieList(url);
+  }
+
+  @override
+  Future<MovieResponseDto> fetchUpcoming() async {
+    final url = Uri.parse('$_baseUrl/movie/upcoming?language=ko-KR&page=1');
+    return _getMovieList(url);
+  }
+
+  @override
+  Future<MovieDetailDto> fetchMovieDetail(int movieId) async {
+    final url = Uri.parse('$_baseUrl/movie/$movieId?language=ko-KR');
+    final response = await http.get(url, headers: _headers);
 
     if (response.statusCode != 200) {
-      throw Exception('API 요청 실패: ${response.statusCode}');
+      throw Exception('상세 API 요청 실패: ${response.statusCode}');
     }
 
     final data = json.decode(response.body);
-    final List results = data['results'];
+    return MovieDetailDto.fromJson(data);
+  }
 
-    return results.map((e) => MovieDto.fromJson(e)).toList();
+  Future<MovieResponseDto> _getMovieList(Uri url) async {
+    final response = await http.get(url, headers: _headers);
+    if (response.statusCode != 200) {
+      throw Exception('목록 API 요청 실패: ${response.statusCode}');
+    }
+
+    final data = json.decode(response.body);
+    return MovieResponseDto.fromJson(data);
   }
 }
