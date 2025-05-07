@@ -1,3 +1,4 @@
+import 'package:flutter_movie_info/provider/usecase_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entities/movie.dart';
 import '../../../domain/usecases/get_now_playing_movies.dart';

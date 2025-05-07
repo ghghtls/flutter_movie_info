@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_movie_info/pages/detailpage/detail_page.dart'; // DetailPage import
+import 'package:flutter_movie_info/pages/detailpage/detail_page.dart';
 import 'package:flutter_movie_info/pages/homepage/widgets/movie_category.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../provider/movie_providers.dart';
@@ -20,8 +20,8 @@ class MovieListSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = movieProviderByCategory(category);
-    final state = ref.watch(provider);
+    final provider = ref.watch(movieProviderByCategory(category));
+    final AsyncValue<List<Movie>> state = ref.watch(provider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +54,7 @@ class MovieListSection extends ConsumerWidget {
                         child: Stack(
                           children: [
                             Hero(
-                              tag: 'poster-${movie.id}', // 고유한 태그
+                              tag: 'poster-${movie.id}',
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: Image.network(

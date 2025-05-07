@@ -1,3 +1,5 @@
+import 'package:flutter_movie_info/domain/repositories/movie_repository.dart';
+
 import '../../domain/entities/movie.dart';
 import '../datasources/movie_api.dart';
 

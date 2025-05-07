@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_movie_info/pages/homepage/widgets/movie_category.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'widgets/movie_list_section.dart';
 
 class HomePage extends StatelessWidget {
@@ -22,11 +24,19 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // 영화 섹션들
-            const MovieListSection(title: '현재 상영중'),
-            const MovieListSection(title: '인기순', showRanking: true),
-            const MovieListSection(title: '평점 높은순'),
-            const MovieListSection(title: '개봉예정'),
+
+            /// 이 아래부터 각각의 상태를 가진 섹션
+            MovieListSection(
+              title: '현재 상영중',
+              category: MovieCategory.nowPlaying,
+            ),
+            MovieListSection(
+              title: '인기순',
+              category: MovieCategory.popular,
+              showRanking: true,
+            ),
+            MovieListSection(title: '평점 높은순', category: MovieCategory.topRated),
+            MovieListSection(title: '개봉예정', category: MovieCategory.upcoming),
           ],
         ),
       ),
