@@ -1,10 +1,12 @@
 import 'package:flutter_movie_info/domain/entities/movie.dart';
 import 'package:flutter_movie_info/domain/repositories/movie_repository.dart';
 
-class GetNowPlayingMovies {
+class GetTopRatedMovies {
   final MovieRepository repository;
 
-  GetNowPlayingMovies(this.repository);
+  GetTopRatedMovies(this.repository);
 
-  Future<List<Movie>> call() => repository.getNowPlaying();
+  Future<List<Movie>> call() {
+    return repository.getTopRated();
+  }
 }
