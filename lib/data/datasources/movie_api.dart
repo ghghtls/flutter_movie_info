@@ -7,6 +7,9 @@ import '../dto/movie_detail_dto.dart';
 import 'movie_data_source.dart';
 
 class MovieApi implements MovieDataSource {
+  final http.Client client;
+
+  MovieApi({http.Client? client}) : client = client ?? http.Client();
   final String _baseUrl = 'https://api.themoviedb.org/3';
 
   Map<String, String> get _headers => {
